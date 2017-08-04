@@ -49,6 +49,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     public PagerIndicator setViewPager(@NonNull ViewPager mViewPager) {
         this.mViewPager = mViewPager;
+        mViewPager.addOnPageChangeListener(this);
         return this;
     }
 
@@ -86,7 +87,6 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private void resetView() {
         mIndicatorContainer.removeAllViews();
         onPageScrolled(0, 0, 0);
-        mViewPager.addOnPageChangeListener(this);
     }
 
     public void initDot(int size) {
