@@ -23,26 +23,18 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private float mPointSize = 8;
 
     public PagerIndicator(Context context) {
-        super(context);
-        createIndicatorContainer(context);
+        this(context, null);
     }
 
     public PagerIndicator(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        createIndicatorContainer(context);
+        this(context, attrs, 0);
     }
 
     public PagerIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        createIndicatorContainer(context);
-    }
-
-    private void createIndicatorContainer(Context context) {
         mContext = context;
         mIndicatorContainer = new LinearLayout(mContext);
         mIndicatorIndexPoint = new View(context);
-        LayoutParams mLP = new LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
-        mIndicatorIndexPoint.setLayoutParams(mLP);
         this.addView(mIndicatorContainer);
         this.addView(mIndicatorIndexPoint);
     }
@@ -62,8 +54,6 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     public PagerIndicator setIndicatorSize(float mPointSize) {
         this.mPointSize = mPointSize;
-        LayoutParams mLP = new LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
-        mIndicatorIndexPoint.setLayoutParams(mLP);
         return this;
     }
 
@@ -89,7 +79,9 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     private void resetView() {
         mIndicatorContainer.removeAllViews();
-        onPageScrolled(0, 0, 0);
+        LayoutParams mLP = new LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
+        mIndicatorIndexPoint.setLayoutParams(mLP);
+        onPageScrolled(mViewPager.getCurrentItem(), 0, 0);
     }
 
     public void initDot(int size) {
