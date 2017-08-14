@@ -28,9 +28,10 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < contentArr.length; i++) {
             contentArr[i] = "this is the page_" + i;
         }
-        mPagerIndicator.setViewPager(mViewPager)
-                .setIndicatorDrawable(R.drawable.guide_point_select, R.drawable.guide_point_nomal)
-                .initDot(contentArr.length);
+        mPagerIndicator.setViewPager(mViewPager)// 绑定ViewPager
+                .setIndicatorDrawable(R.drawable.guide_point_select, R.drawable.guide_point_nomal)// 设置指示器样式
+                .setIndicatorSize(8, 8)// 设置指示器大小，默认8dp
+                .initDot();// 初始化指示器，这一方法须在做一系列指示器配置后方能调用
     }
 
     private PagerAdapter initPagerAdapter() {

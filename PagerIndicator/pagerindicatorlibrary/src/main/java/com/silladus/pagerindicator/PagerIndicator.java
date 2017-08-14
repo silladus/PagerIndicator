@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 
 /**
  * Created by silladus on 2017/8/3/0003.
+ * GitHub: https://github.com/silladus
+ * Description:
  */
 
 public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageChangeListener {
@@ -20,7 +23,8 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private ViewPager mViewPager;
     private int mIndicatorPointDrawableRes;
     private int dis;
-    private float mPointSize = 8;
+    private float mPointSize = 8f;
+    private float mPointMargin = 8f;
 
     public PagerIndicator(Context context) {
         this(context, null);
@@ -52,19 +56,19 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         return this;
     }
 
-    public PagerIndicator setIndicatorSize(float mPointSize) {
+    public PagerIndicator setIndicatorSize(float mPointSize, float mPointMargin) {
         this.mPointSize = mPointSize;
+        this.mPointMargin = mPointMargin;
         return this;
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        LayoutParams lp = (LayoutParams) mIndicatorIndexPoint.getLayoutParams();
         //获取瞬时距离值
-        int left = (int) (dis * positionOffset + position * dis);
-        LayoutParams params = (LayoutParams) mIndicatorIndexPoint.getLayoutParams();
-        params.leftMargin = left;
+        lp.leftMargin = (int) (dis * positionOffset + position * dis);
         //设置距左属性
-        mIndicatorIndexPoint.setLayoutParams(params);
+        mIndicatorIndexPoint.setLayoutParams(lp);
     }
 
     @Override
@@ -79,13 +83,13 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     private void resetView() {
         mIndicatorContainer.removeAllViews();
-        LayoutParams mLP = new LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
-        mIndicatorIndexPoint.setLayoutParams(mLP);
+        mIndicatorIndexPoint.setLayoutParams(new LayoutParams(dp2px(mPointSize), dp2px(mPointSize)));
         onPageScrolled(mViewPager.getCurrentItem(), 0, 0);
     }
 
-    public void initDot(int size) {
+    public void initDot() {
         resetView();
+        int size = mViewPager.getAdapter() == null ? 1 : mViewPager.getAdapter().getCount();
         if (size > 1) {
             //ViewPager 小圆点初始化
             for (int i = 0; i < size; i++) {
@@ -95,7 +99,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
                 //设置小圆点的左间距
                 if (i > 0) {
-                    params.leftMargin = 15;
+                    params.leftMargin = dp2px(mPointMargin);
                 }
                 view.setLayoutParams(params);
                 //LineaLayout 添加小圆点
