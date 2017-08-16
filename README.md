@@ -8,7 +8,7 @@
 
 示例代码
 -------
-'''java
+```java
         mPagerIndicator.setViewPager(mViewPager)// 绑定ViewPager
                 .setIndicatorDrawable(R.drawable.guide_point_select, R.drawable.guide_point_nomal)// 设置指示器样式
                 .setIndicatorSize(6, 6)// 设置指示器大小，默认8dp
