@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
@@ -25,6 +24,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private int dis;
     private float mPointSize = 8f;
     private float mPointMargin = 8f;
+    private int mPageCount;
 
     public PagerIndicator(Context context) {
         this(context, null);
@@ -47,6 +47,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         this.mViewPager = mViewPager;
         mViewPager.removeOnPageChangeListener(this);
         mViewPager.addOnPageChangeListener(this);
+        mPageCount = mViewPager.getAdapter() == null ? 1 : mViewPager.getAdapter().getCount();
         return this;
     }
 
@@ -59,6 +60,11 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     public PagerIndicator setIndicatorSize(float mPointSize, float mPointMargin) {
         this.mPointSize = mPointSize;
         this.mPointMargin = mPointMargin;
+        return this;
+    }
+
+    public PagerIndicator setPageCount(int mPageCount) {
+        this.mPageCount = mPageCount;
         return this;
     }
 
@@ -89,10 +95,9 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     public void initDot() {
         resetView();
-        int size = mViewPager.getAdapter() == null ? 1 : mViewPager.getAdapter().getCount();
-        if (size > 1) {
+        if (mPageCount > 1) {
             //ViewPager 小圆点初始化
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < mPageCount; i++) {
                 View view = new View(mContext);
                 view.setBackgroundResource(mIndicatorPointDrawableRes);
                 //设置小圆点的宽高
