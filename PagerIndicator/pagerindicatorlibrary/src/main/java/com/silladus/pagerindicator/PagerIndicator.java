@@ -1,6 +1,9 @@
 package com.silladus.pagerindicator;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -20,7 +23,12 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private LinearLayout mIndicatorContainer;
     private View mIndicatorIndexPoint;
     private ViewPager mViewPager;
+    /**
+     * 背景圆点
+     */
     private int mIndicatorPointDrawableRes;
+    private Drawable bgDrawable;
+
     private int dis;
     private float mPointSize = 8f;
     private float mPointMargin = 8f;
@@ -54,6 +62,12 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     public PagerIndicator setIndicatorDrawable(int selectPointDrawableRes, int bgPointDrawableRes) {
         mIndicatorIndexPoint.setBackgroundResource(selectPointDrawableRes);
         this.mIndicatorPointDrawableRes = bgPointDrawableRes;
+        return this;
+    }
+
+    public PagerIndicator setIndicatorColorDrawable(@ColorInt int selectColor, @ColorInt int bgColor) {
+        mIndicatorIndexPoint.setBackground(initPoint(selectColor));
+        this.bgDrawable = initPoint(bgColor);
         return this;
     }
 
@@ -93,13 +107,25 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         onPageScrolled(mViewPager.getCurrentItem(), 0, 0);
     }
 
+    private Drawable initPoint(@ColorInt int color){
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setShape(GradientDrawable.OVAL);
+        gradientDrawable.setSize((int) mPointSize, (int) mPointSize);
+        gradientDrawable.setColor(color);
+        return gradientDrawable;
+    }
+
     public void initDot() {
         resetView();
         if (mPageCount > 1) {
             //ViewPager 小圆点初始化
             for (int i = 0; i < mPageCount; i++) {
                 View view = new View(mContext);
-                view.setBackgroundResource(mIndicatorPointDrawableRes);
+                if (mIndicatorPointDrawableRes != 0) {
+                    view.setBackgroundResource(mIndicatorPointDrawableRes);
+                } else {
+                    view.setBackground(bgDrawable);
+                }
                 //设置小圆点的宽高
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
                 //设置小圆点的左间距
