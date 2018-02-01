@@ -14,7 +14,7 @@
                 .setIndicatorSize(6, 6)// 设置指示器大小，默认8dp
 				.setPageCount(3) //页面个数，若不设置则默认取ViewPager页数
                 .initDot();// 初始化指示器，这一方法须在做一系列指示器配置后方能调用
-	```
+```
 	
 或者
 ```java 
@@ -23,4 +23,4 @@
                 .setIndicatorSize(8, 8)// 设置指示器大小，默认8dp
                 .setPageCount(3) //页面个数，若不设置则默认取ViewPager页数
                 .initDot();// 初始化指示器，这一方法须在做一系列指示器配置后方能调用
-	```
+```
