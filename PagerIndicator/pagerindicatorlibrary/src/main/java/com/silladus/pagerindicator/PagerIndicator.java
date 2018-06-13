@@ -30,8 +30,9 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private Drawable bgDrawable;
 
     private int dis;
-    private float mPointSize = 8f;
-    private float mPointMargin = 8f;
+    private float mIndicatorWidth = 8f;
+    private float mIndicatorHeight = 8f;
+    private float mIndicatorMargin = 8f;
     private int mPageCount;
 
     public PagerIndicator(Context context) {
@@ -71,9 +72,10 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         return this;
     }
 
-    public PagerIndicator setIndicatorSize(float mPointSize, float mPointMargin) {
-        this.mPointSize = mPointSize;
-        this.mPointMargin = mPointMargin;
+    public PagerIndicator setIndicatorSize(float width, float height, float margin) {
+        this.mIndicatorWidth = width;
+        this.mIndicatorHeight = height;
+        this.mIndicatorMargin = margin;
         return this;
     }
 
@@ -103,14 +105,15 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     private void resetView() {
         mIndicatorContainer.removeAllViews();
-        mIndicatorIndexPoint.setLayoutParams(new LayoutParams(dp2px(mPointSize), dp2px(mPointSize)));
+        mIndicatorIndexPoint.setLayoutParams(new LayoutParams(
+                dp2px(mIndicatorWidth), dp2px(mIndicatorHeight)));
         onPageScrolled(mViewPager.getCurrentItem(), 0, 0);
     }
 
     private Drawable initPoint(@ColorInt int color){
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.OVAL);
-        gradientDrawable.setSize((int) mPointSize, (int) mPointSize);
+        gradientDrawable.setSize((int) mIndicatorWidth, (int) mIndicatorHeight);
         gradientDrawable.setColor(color);
         return gradientDrawable;
     }
@@ -127,22 +130,24 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
                     view.setBackground(bgDrawable);
                 }
                 //设置小圆点的宽高
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(mPointSize), dp2px(mPointSize));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        dp2px(mIndicatorWidth), dp2px(mIndicatorHeight)
+                );
                 //设置小圆点的左间距
                 if (i > 0) {
-                    params.leftMargin = dp2px(mPointMargin);
+                    params.leftMargin = dp2px(mIndicatorMargin);
                 }
                 view.setLayoutParams(params);
                 //LineaLayout 添加小圆点
                 mIndicatorContainer.addView(view);
             }
             //获取圆点与圆点之间的距离
-            getDistancesPoint();
+            getDistances();
         }
     }
 
     //获取圆点与圆点之间的距离
-    private void getDistancesPoint() {
+    private void getDistances() {
         final View view0 = mIndicatorContainer.getChildAt(0);
         final View view1 = mIndicatorContainer.getChildAt(1);
         //在onDraw方法后才调用，不能直接获取属性值
