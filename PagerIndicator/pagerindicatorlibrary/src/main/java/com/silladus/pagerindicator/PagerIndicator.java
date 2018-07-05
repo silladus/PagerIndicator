@@ -3,6 +3,7 @@ package com.silladus.pagerindicator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -19,7 +20,6 @@ import android.widget.RelativeLayout;
  */
 
 public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageChangeListener {
-    private Context mContext;
     private LinearLayout mIndicatorContainer;
     private View mIndicatorIndexPoint;
     private ViewPager mViewPager;
@@ -30,8 +30,8 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
     private Drawable bgDrawable;
 
     private int dis;
-    private float mIndicatorWidth = 8f;
-    private float mIndicatorHeight = 8f;
+    private int mIndicatorWidth = 8;
+    private int mIndicatorHeight = 8;
     private float mIndicatorMargin = 8f;
     private int mPageCount;
 
@@ -45,8 +45,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     public PagerIndicator(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mContext = context;
-        mIndicatorContainer = new LinearLayout(mContext);
+        mIndicatorContainer = new LinearLayout(context);
         mIndicatorIndexPoint = new View(context);
         this.addView(mIndicatorContainer);
         this.addView(mIndicatorIndexPoint);
@@ -72,7 +71,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         return this;
     }
 
-    public PagerIndicator setIndicatorSize(float width, float height, float margin) {
+    public PagerIndicator setIndicatorSize(int width, int height, float margin) {
         this.mIndicatorWidth = width;
         this.mIndicatorHeight = height;
         this.mIndicatorMargin = margin;
@@ -110,10 +109,10 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         onPageScrolled(mViewPager.getCurrentItem(), 0, 0);
     }
 
-    private Drawable initPoint(@ColorInt int color){
+    private Drawable initPoint(@ColorInt int color) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setShape(GradientDrawable.OVAL);
-        gradientDrawable.setSize((int) mIndicatorWidth, (int) mIndicatorHeight);
+        gradientDrawable.setSize(mIndicatorWidth, mIndicatorHeight);
         gradientDrawable.setColor(color);
         return gradientDrawable;
     }
@@ -123,7 +122,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         if (mPageCount > 1) {
             //ViewPager 小圆点初始化
             for (int i = 0; i < mPageCount; i++) {
-                View view = new View(mContext);
+                View view = new View(getContext());
                 if (mIndicatorPointDrawableRes != 0) {
                     view.setBackgroundResource(mIndicatorPointDrawableRes);
                 } else {
@@ -156,11 +155,11 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
             @Override
             public void onGlobalLayout() {
                 dis = view1.getLeft() - view0.getLeft();
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mIndicatorContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-//                } else {
-//                    guide_ll_point.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    mIndicatorContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    mIndicatorContainer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
             }
         });
     }
@@ -169,7 +168,7 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
      */
     private int dp2px(float dpValue) {
-        float scale = mContext.getResources().getDisplayMetrics().density;
+        float scale = getResources().getDisplayMetrics().density;
         return Math.round(dpValue * scale);
     }
 

@@ -38,10 +38,10 @@ makeJar.dependsOn(build)
 //gradlew makeJar //这种是将项目中的lib库生成jar。（对项目中的所有有makeJar任务的lib都有效）
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    provided fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestProvided('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
+    provided 'com.android.support:appcompat-v7:25.3.1'
+    testProvided 'junit:junit:4.12'
 }
