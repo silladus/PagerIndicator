@@ -4,7 +4,7 @@
 效果预览
 -------  
 
-![image](https://github.com/silladus/PagerIndicator/blob/master/PagerIndicator/img/view.png)
+![image](https://github.com/silladus/PagerIndicator/blob/master/img/view.png)
 
 示例代码
 -------
@@ -16,8 +16,8 @@
                 // 设置指示器大小，默认8dp
                 .setIndicatorSize(6, 6)
                 //页面个数，若不设置则默认取ViewPager页数
-				.setPageCount(3)
-				// 初始化指示器，这一方法须在做一系列指示器配置后方能调用
+                .setPageCount(3)
+                // 初始化指示器，这一方法须在做一系列指示器配置后方能调用
                 .initDot();
 ```
 Installation
@@ -35,7 +35,7 @@ allprojects {
 ```
 Add the dependency in your module build.gradle:
 ```
-    dependencies {
-	        implementation 'com.github.silladus:PagerIndicator:1.0.2'
-	}
+dependencies {
+	implementation 'com.github.silladus:PagerIndicator:1.0.2'
+}
 ```
