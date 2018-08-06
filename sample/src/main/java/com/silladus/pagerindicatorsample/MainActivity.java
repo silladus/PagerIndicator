@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 //                .setIndicatorSize(28, 8, 8)// 设置指示器大小，默认8dp
 //                .setPageCount(3) //页面个数，若不设置则默认取ViewPager页数
 //                .initDot();// 初始化指示器，这一方法须在做一系列指示器配置后方能调用
+
+        mViewPager.setCurrentItem(499, false);
     }
 
     private static class MyPagerAdapter extends PagerAdapter {
@@ -57,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
+            return Integer.MAX_VALUE;
+        }
+
+        public int getRealCount() {
             return contentArr.length;
         }
 
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
+            position %= getRealCount();
             TextView tv = new TextView(container.getContext());
             tv.setText(contentArr[position]);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewPager.LayoutParams.MATCH_PARENT, ViewPager.LayoutParams.MATCH_PARENT);

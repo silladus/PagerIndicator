@@ -85,9 +85,12 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        int realPosition = position % mPageCount;
         LayoutParams lp = (LayoutParams) mIndicatorIndexPoint.getLayoutParams();
         //获取瞬时距离值
-        lp.leftMargin = (int) (dis * positionOffset + position * dis);
+        lp.leftMargin = realPosition < mPageCount - 1
+                ? (int) (dis * positionOffset + realPosition * dis)
+                : (mPageCount - 1) * dis;
         //设置距左属性
         mIndicatorIndexPoint.setLayoutParams(lp);
     }
@@ -145,7 +148,9 @@ public class PagerIndicator extends RelativeLayout implements ViewPager.OnPageCh
         }
     }
 
-    //获取圆点与圆点之间的距离
+    /**
+     * 获取圆点与圆点之间的距离
+     */
     private void getDistances() {
         final View view0 = mIndicatorContainer.getChildAt(0);
         final View view1 = mIndicatorContainer.getChildAt(1);
